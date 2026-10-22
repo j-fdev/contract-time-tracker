@@ -1,0 +1,16 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Environment
+.env
+.env.*
+*.local
+
+# Local backups, editor & OS files
+_backup-*.tar.gz
+.claude/
+.DS_Store
+Thumbs.db

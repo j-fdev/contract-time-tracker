@@ -1,0 +1,44 @@
+{
+  "name": "contract-time-tracker-server",
+  "version": "1.0.0",
+  "description": "REST API for Contract Time Tracker: projects, clients and time punches.",
+  "private": true,
+  "type": "module",
+  "main": "dist/server.js",
+  "scripts": {
+    "dev": "nodemon --watch src --ext ts --exec \"npm run build && node dist/server.js\"",
+    "build": "rimraf dist && tsc",
+    "start": "node dist/server.js",
+    "typecheck": "tsc --noEmit",
+    "test": "jest"
+  },
+  "author": "Jean-François Drouin",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@auth/core": "^0.41.1",
+    "@auth/express": "^0.12.1",
+    "bcryptjs": "^3.0.3",
+    "cookie": "^1.1.1",
+    "cors": "^2.8.6",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "express-validator": "^7.3.1",
+    "helmet": "^8.1.0",
+    "mongodb": "^6.21.0",
+    "reflect-metadata": "^0.2.2",
+    "socket.io": "^4.8.3",
+    "typeorm": "^0.3.28"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^25.4.0",
+    "jest": "^30.3.0",
+    "nodemon": "^3.1.14",
+    "rimraf": "^5.0.5",
+    "ts-jest": "^29.4.9",
+    "typescript": "^5.9.3"
+  }
+}
