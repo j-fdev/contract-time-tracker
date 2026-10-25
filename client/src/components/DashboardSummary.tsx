@@ -57,6 +57,7 @@ export default function DashboardSummary({ admin, project, client, punches, onCh
                 <SummaryLine label="Hourly rate" value={formatCurrency(project?.hour_rate ?? 0)} />
                 <SummaryLine label="Accrued cost" value={formatCurrency(calculateCost(projectSeconds, project?.hour_rate ?? 0))} />
                 <SummaryLine label="Client" value={client ? `${client.first_name} ${client.last_name}` : 'Not available'} />
+                <SummaryLine label="Company name" value={client?.company_name || 'Not available'} />
                 <SummaryLine label="Client email" value={client?.email || 'Not available'} />
                 <SummaryLine label="Client phone" value={client?.phone_number || 'Not available'} />
                 <MainButton onClick={onLogout}>Log out</MainButton>

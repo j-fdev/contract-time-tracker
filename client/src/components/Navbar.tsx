@@ -1,21 +1,7 @@
 import { useState } from 'react';
 import FolderOpenIcon from '@mui/icons-material/FolderOpen';
 import MenuIcon from '@mui/icons-material/Menu';
-import {
-    AppBar,
-    Box,
-    Button,
-    Drawer,
-    IconButton,
-    List,
-    ListItem,
-    ListItemButton,
-    ListItemText,
-    Tab,
-    Tabs,
-    Toolbar,
-    Typography,
-} from '@mui/material';
+import { AppBar, Box, Button, Drawer, IconButton, List, ListItem, ListItemButton, ListItemText, Tab, Tabs, Toolbar, Typography, } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const NAV_LINKS = [

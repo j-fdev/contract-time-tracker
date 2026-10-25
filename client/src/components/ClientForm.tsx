@@ -1,20 +1,34 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
-import { Alert, Button, Stack, TextField, Typography } from '@mui/material';
+import { Alert, Button, MenuItem, Stack, TextField, Typography } from '@mui/material';
 
 import { ApiError, getErrorMessage } from '../api/client';
 import { createClient } from '../api/users';
-import type { NewClient, User } from '../types/user';
+import { CANADIAN_PROVINCES, type NewClient, type User } from '../types/user';
 import MainButton from './MainButton';
 
-const EMPTY_CLIENT: NewClient = { first_name: '', last_name: '', email: '', phone_number: '', city: '' };
+const EMPTY_CLIENT: NewClient = {
+    first_name: '',
+    last_name: '',
+    company_name: '',
+    email: '',
+    phone_number: '',
+    address: '',
+    city: '',
+    province: '',
+    postal_code: '',
+};
 
-const FIELDS: { name: keyof NewClient; label: string; required: boolean; type?: string }[] = [
+const FIELDS: { name: keyof NewClient; label: string; required: boolean; type?: string; options?: readonly string[] }[] = [
     { name: 'first_name', label: 'First name', required: true },
     { name: 'last_name', label: 'Last name', required: true },
+    { name: 'company_name', label: 'Company name', required: false },
     { name: 'email', label: 'Email', required: true, type: 'email' },
     { name: 'phone_number', label: 'Phone number', required: true, type: 'tel' },
+    { name: 'address', label: 'Address (street, unit)', required: false },
     { name: 'city', label: 'City', required: false },
+    { name: 'province', label: 'Province', required: false, options: CANADIAN_PROVINCES },
+    { name: 'postal_code', label: 'Postal code', required: false },
 ];
 
 interface ClientFormProps {
@@ -56,13 +70,19 @@ export default function ClientForm({ onCreated, onCancel }: ClientFormProps) {
                     key={field.name}
                     label={field.label}
                     type={field.type ?? 'text'}
+                    select={Boolean(field.options)}
                     required={field.required}
                     value={values[field.name]}
                     onChange={(event) => setValues({ ...values, [field.name]: event.target.value })}
                     error={Boolean(fieldErrors[field.name])}
                     helperText={fieldErrors[field.name]}
                     fullWidth
-                />
+                >
+                    {field.options && <MenuItem value="">-</MenuItem>}
+                    {field.options?.map((option) => (
+                        <MenuItem key={option} value={option}>{option}</MenuItem>
+                    ))}
+                </TextField>
             ))}
             <Stack direction="row" spacing={1.5} justifyContent="flex-end">
                 <Button onClick={onCancel}>Back</Button>

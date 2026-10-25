@@ -6,7 +6,6 @@ export function notFoundHandler(req: Request, res: Response) {
     res.status(404).json({ message: `Route not found: ${req.method} ${req.originalUrl}` });
 }
 
-/** Single place where errors become HTTP responses. Express 5 forwards rejected promises here. */
 export function errorHandler(error: unknown, _req: Request, res: Response, _next: NextFunction) {
     if (error instanceof HttpError) {
         res.status(error.status).json({ message: error.message, field: error.field });

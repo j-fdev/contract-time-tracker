@@ -36,6 +36,7 @@ export default function ClientsTable() {
                         <TableHead>
                             <TableRow>
                                 <TableCell sx={headCellSx}>Name</TableCell>
+                                <TableCell sx={headCellSx}>Company</TableCell>
                                 <TableCell sx={headCellSx}>Email</TableCell>
                                 <TableCell sx={headCellSx}>Phone</TableCell>
                                 <TableCell sx={headCellSx}>City</TableCell>
@@ -46,6 +47,7 @@ export default function ClientsTable() {
                             {clients.map((client) => (
                                 <TableRow key={client._id} sx={{ opacity: client.disabled ? 0.5 : 1 }}>
                                     <TableCell sx={cellSx}>{`${client.first_name} ${client.last_name}`}</TableCell>
+                                    <TableCell sx={cellSx}>{client.company_name || '-'}</TableCell>
                                     <TableCell sx={cellSx}>{client.email}</TableCell>
                                     <TableCell sx={cellSx}>{client.phone_number}</TableCell>
                                     <TableCell sx={cellSx}>{client.city}</TableCell>

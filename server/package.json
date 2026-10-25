@@ -10,7 +10,9 @@
     "build": "rimraf dist && tsc",
     "start": "node dist/server.js",
     "typecheck": "tsc --noEmit",
-    "test": "jest"
+    "test": "jest",
+    "seed:demo": "npm run build && node dist/scripts/seed-demo.js",
+    "seed:main": "npm run build && node dist/scripts/seed-demo.js --main"
   },
   "author": "Jean-François Drouin",
   "license": "UNLICENSED",

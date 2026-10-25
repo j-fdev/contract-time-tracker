@@ -14,11 +14,9 @@ export class Punch {
     @Column()
     timesheet_id!: ObjectId;
 
-    /** Start time, Unix seconds. */
     @Column()
     punch_in!: number;
 
-    /** End time, Unix seconds. 0 while the punch is still running. */
     @Column()
     punch_out!: number;
 
@@ -28,7 +26,6 @@ export class Punch {
     @Column()
     notes!: string;
 
-    /** Creation time, Unix seconds. */
     @Column()
     timestamp!: number;
 }

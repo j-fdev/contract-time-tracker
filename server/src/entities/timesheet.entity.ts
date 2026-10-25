@@ -13,7 +13,6 @@ export class Timesheet {
     @Column()
     year!: number;
 
-    /** 0-based week index from the first Monday of `year`. */
     @Column()
     week_period!: number;
 
@@ -23,7 +22,6 @@ export class Timesheet {
     @Column()
     interval!: number;
 
-    /** Creation time, Unix seconds. */
     @Column()
     timestamp!: number;
 }

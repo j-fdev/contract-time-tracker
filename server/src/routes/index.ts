@@ -5,7 +5,6 @@ import { projectsRouter } from './projects.routes.js';
 import { punchesRouter } from './punches.routes.js';
 import { usersRouter } from './users.routes.js';
 
-/** Every route in here requires a logged-in user. */
 export const apiRouter = Router();
 
 apiRouter.use(requireAuth);

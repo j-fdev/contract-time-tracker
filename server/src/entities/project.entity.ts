@@ -6,7 +6,6 @@ export class Project {
     @ObjectIdColumn()
     _id!: ObjectId;
 
-    /** The client (a User with type "Client") the project is billed to. */
     @Column()
     client_id!: ObjectId;
 
@@ -25,7 +24,6 @@ export class Project {
     @Column()
     active!: boolean;
 
-    /** Creation time, Unix seconds. */
     @Column()
     timestamp!: number;
 }

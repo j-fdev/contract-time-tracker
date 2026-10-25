@@ -57,7 +57,6 @@ export async function updateProject(id: ObjectId, input: UpdateProjectInput): Pr
     return findProjectOrThrow(id);
 }
 
-/** Deletes the project together with its punches and timesheets. */
 export async function deleteProject(id: ObjectId): Promise<void> {
     await findProjectOrThrow(id);
     await AppDataSource.getMongoRepository(Punch).deleteMany({ project_id: id });

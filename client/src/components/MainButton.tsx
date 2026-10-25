@@ -8,7 +8,6 @@ type MainButtonProps = ButtonProps & {
     loadingText?: string;
 };
 
-/** The app's primary call-to-action button (blue gradient). */
 export default function MainButton({ isLoading = false, loadingText, children, disabled, sx, ...buttonProps }: MainButtonProps) {
     return (
         <Button

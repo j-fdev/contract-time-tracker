@@ -6,13 +6,24 @@ REST API for Contract Time Tracker, a time-tracking app for contract work: punch
 
 ## Getting started
 
+Requirements: Node.js 20+ and a local MongoDB server.
+
 ```bash
 npm install
-cp .env.example .env   # then set AUTH_SECRET (see .env.example) and your MongoDB settings
-npm run dev            # rebuilds and restarts on every change
+cp .env.example .env     # then set AUTH_SECRET (see .env.example) and your MongoDB settings
+npm run seed:demo        # creates a demo database with sample clients, projects and punches
 ```
 
-The API listens on `http://localhost:5000`. Other scripts: `npm run build`, `npm start`, `npm run typecheck`.
+In `.env`, set `DB_NAME=contract_time_tracker_demo` to use the demo data, then start the API:
+
+```bash
+npm run dev              # rebuilds and restarts on every change
+```
+
+The API listens on `http://localhost:5000`. Log in from the web client with the demo account:
+`demo@contracttimetracker.dev` / `Demo-Tracker-2026!`
+
+Other scripts: `npm run build`, `npm start`, `npm run typecheck`.
 
 ## API
 
@@ -50,6 +61,7 @@ src/
   middlewares/     Auth guard, validation result handler, error handler
   types/           Shared TypeScript types
   utils/           Small helpers (HTTP errors, time/week calculations, ...)
+  scripts/         seed-demo.ts: fills a database with sample data
   socket.ts        Real-time "punches changed" notifications
 ```
 
