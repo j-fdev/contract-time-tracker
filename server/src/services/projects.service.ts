@@ -36,6 +36,7 @@ export async function createProject(input: CreateProjectInput): Promise<Project>
         description: input.description,
         notes: input.notes ?? '',
         hour_rate: input.hour_rate,
+        folder_path: input.folder_path ?? '',
         active: input.active ?? true,
         timestamp: nowInSeconds(),
     });

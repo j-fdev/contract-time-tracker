@@ -67,7 +67,7 @@ export default function LoginPage() {
             >
                 <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1.5fr 1fr' }, borderRadius: 4, overflow: 'hidden' }}>
                     <Stack spacing={2.5} sx={{ p: { xs: 3, md: 4 }, background: heroGradient, color: '#ffffff', alignItems: 'center', textAlign: 'center' }}>
-                        <Box component="img" src="/punch-logo.png" alt="Contract Time Tracker" sx={{ width: '100%', maxWidth: { xs: 390, md: 520 } }} />
+                        <Box component="img" src="/Contract Time Tracker Punch Emblem.png" alt="Contract Time Tracker" sx={{ width: '100%', maxWidth: { xs: 390, md: 520 } }} />
                         <Typography variant="h3" sx={{ fontWeight: 800, lineHeight: 1.08, fontSize: { xs: '2rem', md: '2.5rem' } }}>
                             Welcome back, <br /> let&apos;s clock in.
                         </Typography>

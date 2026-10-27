@@ -15,9 +15,10 @@ interface ProjectFormValues {
     notes: string;
     hour_rate: string;
     client_id: string;
+    folder_path: string;
 }
 
-const EMPTY_VALUES: ProjectFormValues = { project_name: '', description: '', notes: '', hour_rate: '', client_id: '' };
+const EMPTY_VALUES: ProjectFormValues = { project_name: '', description: '', notes: '', hour_rate: '', client_id: '', folder_path: '' };
 
 interface ProjectFormProps {
     clients: User[];
@@ -84,6 +85,7 @@ export default function ProjectForm({ clients, onClientCreated, onCreated, onCan
             {textField('project_name', 'Project name')}
             {textField('description', 'Description')}
             {textField('notes', 'Notes', false)}
+            {textField('folder_path', 'Project folder on your computer (optional)', false)}
             <TextField
                 label="Hourly rate"
                 type="number"

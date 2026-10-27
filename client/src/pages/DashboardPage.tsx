@@ -8,6 +8,7 @@ import { listUsers } from '../api/users';
 import DashboardSummary from '../components/DashboardSummary';
 import Navbar from '../components/Navbar';
 import Notification, { type NotificationMessage } from '../components/Notification';
+import ProjectFolderDialog from '../components/ProjectFolderDialog';
 import ProjectPickerDialog from '../components/ProjectPickerDialog';
 import { useAuth } from '../context/AuthContext';
 import { useApiResource } from '../hooks/useApiResource';
@@ -30,6 +31,7 @@ export default function DashboardPage() {
 
     const [selectedProjectId, setSelectedProjectId] = useLocalStorage('selectedProjectId', '');
     const [isPickerOpen, setIsPickerOpen] = useState(false);
+    const [isFolderOpen, setIsFolderOpen] = useState(false);
     const [notification, setNotification] = useState<NotificationMessage | null>(null);
 
     // Another tab (or device) punched: refresh so every screen shows the same timer.
@@ -51,6 +53,7 @@ export default function DashboardPage() {
         punches: punches.data,
         selectedProject,
         reloadPunches: punches.reload,
+        reloadProjects: projects.reload,
         reloadUsers: users.reload,
         notify: setNotification,
     };
@@ -59,7 +62,7 @@ export default function DashboardPage() {
 
     return (
         <>
-            <Navbar projectName={selectedProject?.project_name ?? null} onChangeProject={() => setIsPickerOpen(true)} />
+            <Navbar projectName={selectedProject?.project_name ?? null} onChangeProject={() => setIsPickerOpen(true)} onOpenFolder={() => setIsFolderOpen(true)} />
             <Box
                 sx={{
                     px: { xs: 2, md: 3 },
@@ -98,6 +101,15 @@ export default function DashboardPage() {
                 onProjectCreated={() => void projects.reload()}
                 onClientCreated={() => void users.reload()}
             />
+            {selectedProject && (
+                <ProjectFolderDialog
+                    open={isFolderOpen}
+                    project={selectedProject}
+                    onClose={() => setIsFolderOpen(false)}
+                    onSaved={projects.reload}
+                    notify={setNotification}
+                />
+            )}
             <Notification notification={notification} onClose={() => setNotification(null)} />
         </>
     );

@@ -12,6 +12,7 @@ export interface DashboardContext {
     punches: Punch[];
     selectedProject: Project | null;
     reloadPunches: () => Promise<void>;
+    reloadProjects: () => Promise<void>;
     reloadUsers: () => Promise<void>;
     notify: (notification: NotificationMessage) => void;
 }

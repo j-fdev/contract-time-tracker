@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import FolderOpenIcon from '@mui/icons-material/FolderOpen';
+import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import MenuIcon from '@mui/icons-material/Menu';
-import { AppBar, Box, Button, Drawer, IconButton, List, ListItem, ListItemButton, ListItemText, Tab, Tabs, Toolbar, Typography, } from '@mui/material';
+import { AppBar, Box, Button, Drawer, IconButton, List, ListItem, ListItemButton, ListItemText, Tab, Tabs, Toolbar, Tooltip, Typography, } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const NAV_LINKS = [
@@ -15,9 +16,10 @@ type NavPath = (typeof NAV_LINKS)[number]['path'];
 interface NavbarProps {
     projectName: string | null;
     onChangeProject: () => void;
+    onOpenFolder: () => void;
 }
 
-export default function Navbar({ projectName, onChangeProject }: NavbarProps) {
+export default function Navbar({ projectName, onChangeProject, onOpenFolder }: NavbarProps) {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const location = useLocation();
     const navigate = useNavigate();
@@ -55,13 +57,20 @@ export default function Navbar({ projectName, onChangeProject }: NavbarProps) {
                             <Tab key={link.path} label={link.label} value={link.path} />
                         ))}
                     </Tabs>
+                    <Tooltip title="Project folder">
+                        <span style={{ marginLeft: 'auto' }}>
+                            <IconButton color="inherit" aria-label="Project folder" onClick={onOpenFolder} disabled={!projectName}>
+                                <FolderOpenIcon />
+                            </IconButton>
+                        </span>
+                    </Tooltip>
                     <Button
                         color="inherit"
                         variant="outlined"
-                        startIcon={<FolderOpenIcon />}
+                        startIcon={<SwapHorizIcon />}
                         onClick={onChangeProject}
                         title="Change or create a project"
-                        sx={{ ml: 'auto', textTransform: 'none', borderColor: 'rgba(255, 255, 255, 0.5)', maxWidth: { xs: 160, sm: 280 } }}
+                        sx={{ textTransform: 'none', borderColor: 'rgba(255, 255, 255, 0.5)', maxWidth: { xs: 160, sm: 280 } }}
                     >
                         <Box component="span" sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                             {projectName ?? 'Choose a project'}

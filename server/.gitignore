@@ -21,3 +21,7 @@ Thumbs.db
 
 # Data backups written by the seed script
 seed-backup-*.json
+
+# Local diagnostic script
+check-account.mjs
+restore-admin.mjs

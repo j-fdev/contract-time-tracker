@@ -1,17 +1,21 @@
-import { useMemo } from 'react';
-import { Chip, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TableRow, Typography } from '@mui/material';
+import { useMemo, useState } from 'react';
+import { Chip, Dialog, DialogContent, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TableRow, Typography } from '@mui/material';
 
 import { useNow } from '../hooks/useNow';
 import { useDashboard } from '../pages/dashboardContext';
+import type { Project } from '../types/project';
 import { calculateCost, formatCurrency } from '../utils/money';
 import { filterByProject, findActivePunch, sumDurations } from '../utils/punches';
 import { formatDate, formatDuration } from '../utils/time';
+import MainButton from './MainButton';
+import ProjectForm from './ProjectForm';
 
 const cellSx = { color: 'white', borderColor: '#3a3a3a' };
 const headCellSx = { ...cellSx, fontWeight: 700 };
 
 export default function ProjectsTable() {
-    const { projects, users, punches } = useDashboard();
+    const { projects, users, punches, reloadProjects, reloadUsers, notify } = useDashboard();
+    const [isFormOpen, setIsFormOpen] = useState(false);
     const now = useNow(punches.some((punch) => punch.punch_out === 0));
 
     const clientNames = useMemo(
@@ -34,9 +38,18 @@ export default function ProjectsTable() {
     const totalSeconds = rows.reduce((sum, row) => sum + row.workedSeconds, 0);
     const totalCost = rows.reduce((sum, row) => sum + row.cost, 0);
 
+    const handleCreated = async (project: Project) => {
+        setIsFormOpen(false);
+        await reloadProjects();
+        notify({ severity: 'success', message: `${project.project_name} was created.` });
+    };
+
     return (
         <Paper sx={{ width: '100%', bgcolor: 'black', p: { xs: 1, md: 2 } }}>
-            <Typography variant="h5" sx={{ fontWeight: 800, mb: 2, color: 'white' }}>Projects</Typography>
+            <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
+                <Typography variant="h5" sx={{ fontWeight: 800, color: 'white' }}>Projects</Typography>
+                <MainButton size="medium" sx={{ py: 0.75 }} onClick={() => setIsFormOpen(true)}>Add project</MainButton>
+            </Stack>
             {rows.length === 0 ? (
                 <Typography sx={{ color: 'white', textAlign: 'center', py: 6 }}>No projects yet.</Typography>
             ) : (
@@ -77,6 +90,17 @@ export default function ProjectsTable() {
                     </Table>
                 </TableContainer>
             )}
+
+            <Dialog open={isFormOpen} onClose={() => setIsFormOpen(false)} fullWidth maxWidth="xs">
+                <DialogContent>
+                    <ProjectForm
+                        clients={users.filter((user) => user.type === 'Client')}
+                        onClientCreated={() => void reloadUsers()}
+                        onCreated={handleCreated}
+                        onCancel={() => setIsFormOpen(false)}
+                    />
+                </DialogContent>
+            </Dialog>
         </Paper>
     );
 }

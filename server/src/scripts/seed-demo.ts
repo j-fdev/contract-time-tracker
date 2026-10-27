@@ -12,7 +12,7 @@ import bcrypt from 'bcryptjs';
 import { DataSource, type MongoRepository } from 'typeorm';
 import type { ObjectId } from 'mongodb';
 
-import { env } from '../config/env.js';
+import { env, withDatabase } from '../config/env.js';
 import { Project, Punch, Timesheet, User } from '../entities/index.js';
 import type { PunchType } from '../types/punch.types.js';
 import { getWeekPeriod, nowInSeconds } from '../utils/time.js';
@@ -136,14 +136,24 @@ async function seed() {
     }
 
     const databaseName = USE_MAIN_DATABASE ? env.dbName : DEMO_DB_NAME;
+    if (!databaseName) throw new Error('Set DB_NAME in .env first.');
+
     const dataSource = new DataSource({
         type: 'mongodb',
-        url: env.mongoUri,
+        url: withDatabase(env.mongoUri, databaseName),
         database: databaseName,
         entities: [User, Project, Punch, Timesheet],
         synchronize: true,
     });
     await dataSource.initialize();
+
+    // Safety net: never touch a database other than the one intended.
+    const connectedTo = (dataSource.driver as unknown as { database?: string }).database;
+    if (connectedTo !== databaseName) {
+        await dataSource.destroy();
+        throw new Error(`Connected to "${connectedTo}" instead of "${databaseName}". Nothing was changed.`);
+    }
+    console.log(`[seed] Connected to database "${connectedTo}"`);
 
     const users = dataSource.getMongoRepository(User);
     const projectsRepository = dataSource.getMongoRepository(Project);
@@ -153,12 +163,8 @@ async function seed() {
     const now = nowInSeconds();
     const createdAt = now - (DAYS_OF_HISTORY + 10) * 24 * HOUR;
 
-    if (USE_MAIN_DATABASE) {
-        const keptAdmin = await users.findOne({ where: { email: KEEP_EMAIL } });
-        if (!keptAdmin) {
-            throw new Error(`No user with email ${KEEP_EMAIL} in "${databaseName}". Nothing was changed.`);
-        }
-
+    // Always save what is about to be replaced, whatever the mode.
+    if ((await users.count()) + (await projectsRepository.count()) + (await punches.count()) > 0) {
         const backup = {
             database: databaseName,
             createdAt: new Date().toISOString(),
@@ -170,6 +176,14 @@ async function seed() {
         const backupFile = `seed-backup-${new Date().toISOString().replace(/[:.]/g, '-')}.json`;
         writeFileSync(backupFile, JSON.stringify(backup, null, 2));
         console.log(`[seed] Backup of the current data saved to ${backupFile}`);
+
+    }
+
+    if (USE_MAIN_DATABASE) {
+        const keptAdmin = await users.findOne({ where: { email: KEEP_EMAIL } });
+        if (!keptAdmin) {
+            throw new Error(`No user with email ${KEEP_EMAIL} in "${databaseName}". Nothing was changed.`);
+        }
 
         await users.deleteMany({ email: { $ne: KEEP_EMAIL } });
         for (const repository of [projectsRepository, punches, timesheets]) {

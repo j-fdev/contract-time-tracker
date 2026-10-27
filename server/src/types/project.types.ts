@@ -4,6 +4,7 @@ export interface CreateProjectInput {
     description: string;
     notes?: string;
     hour_rate: number;
+    folder_path?: string;
     active?: boolean;
 }
 

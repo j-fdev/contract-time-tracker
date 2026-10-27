@@ -5,6 +5,7 @@ export interface Project {
     description: string;
     notes: string;
     hour_rate: number;
+    folder_path?: string;
     active: boolean;
     timestamp: number;
 }
@@ -15,4 +16,5 @@ export interface NewProject {
     description: string;
     notes: string;
     hour_rate: number;
+    folder_path: string;
 }
