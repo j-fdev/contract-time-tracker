@@ -158,4 +158,3 @@ The demo account only exists in the local demo database created by the seed scri
 
 **Jean-François Drouin**: [github.com/j-fdev](https://github.com/j-fdev)
 
-© 2026 Jean-François Drouin. All rights reserved. This code is shared for portfolio purposes.
